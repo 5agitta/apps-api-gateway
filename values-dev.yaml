@@ -14,7 +14,7 @@ image:
   pullPolicy: Always
 
 service:
-  type: NodePort
+  type: ClusterIP
   targetPort: 8085
   nodePort: 30885
 
