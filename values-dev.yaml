@@ -10,10 +10,18 @@ config:
 replicaCount: 1
 
 image:
-  name: api-service
+  name: api-gateway
   pullPolicy: Always
 
 service:
   type: NodePort
   targetPort: 8085
   nodePort: 30885
+
+ingress:
+  enabled: true
+  rules:
+    - host: taxwizapi.sagitta.dev
+      path: /
+      serviceName: api-gateway-service
+      servicePort: 80

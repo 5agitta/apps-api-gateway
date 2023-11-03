@@ -42,7 +42,7 @@ spring:
 management:
   zipkin:
     tracing:
-      endpoint: ${ZIPKIN_ENDPOINT}
+      endpoint: ${ZIPKIN_URL}
 
 logging:
   config: classpath:log/logback-dev.xml
