@@ -19,29 +19,34 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user-service
-          uri: http://${hosts.userservice}:8081
-          metadata:
-            docs: /api/docs
-          predicates:
-            - Path=/api/user-management/**
-          filters:
-            - RewritePath=/api/user-management/?(?<segment>.*), /api/user/$\{segment}
-        # FIXME: Make sure that only external clients can access /authenticate
         - id: authentication-service
-          uri: http://${hosts.auth-service}:8082
+          uri: http://localhost:8083
           metadata:
             public: true
             docs: /api/docs
           predicates:
-            - Path=/api/authenticate/**
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/auth/?(?<segment>.*), /authenticate/$\{segment}
+        - id: user-service
+          uri: http://localhost:8084
+          metadata:
+            public: false
+            docs: /api/docs
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - RewritePath=/api/user/?(?<segment>.*), /users/$\{segment}
         - id: tax-service
-          uri: http://${hosts.tax-service}:8082
+          uri: http://localhost:8082
           metadata:
-            public: true
+            public: false
             docs: /api/docs
           predicates:
-            - Path=/api/authenticate/**
+            - Path=/api/tax/**
+          filters:
+            - RewritePath=/api/tax/?(?<segment>.*), /tax/$\{segment}
+
     config:
       enabled: false
 
