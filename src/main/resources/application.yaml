@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8085
 
 spring:
   application:
@@ -16,39 +16,64 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/migrations/changelog-master.xml
-
-#springdoc:
-#  show-actuator: true
-#  swagger-ui:
-#    path: /swagger-ui
-#  api-docs:
-#    path: /api-docs
-
-#management:
-#  server:
-#    port: 8081
-#  endpoints:
-#    web:
-#      exposure:
-#        include: '*'
-#  info:
-#    env:
-#      enabled: true
-#  endpoint:
-#    health:
-#      probes:
-#        enabled: true
-#  health:
-#    livenessstate:
-#      enabled: true
-#    readinessstate:
-#      enabled: true
-#  zipkin:
-#    tracing:
-#      endpoint: http://localhost:9411/api/v2/spans
-#  tracing:
-#    sampling:
-#      probability: 1
+  data:
+    redis:
+      timeout: 600ms
+  cache:
+    type: redis
+    redis:
+      cache-null-values: false
+      time-to-live: 60
+  cloud:
+    gateway:
+      routes:
+        - id: authentication-service
+          uri: http://localhost:8083
+          metadata:
+            public: true
+            docs: /api/docs
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/auth/?(?<segment>.*), /authenticate/$\{segment}
+        - id: user-service
+          uri: http://localhost:8084
+          metadata:
+            public: false
+            docs: /api/docs
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - RewritePath=/api/user/?(?<segment>.*), /users/$\{segment}
+        - id: tax-service
+          uri: http://localhost:8082
+          metadata:
+            public: false
+            docs: /api/docs
+          predicates:
+            - Path=/api/tax/**
+          filters:
+            - RewritePath=/api/tax/?(?<segment>.*), /tax/$\{segment}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  info:
+    env:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  tracing:
+    sampling:
+      probability: 1
 
 logging:
   level:
