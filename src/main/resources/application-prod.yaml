@@ -10,6 +10,12 @@ spring:
       password: ${REDIS_PASSWORD}
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
       routes:
         - id: authentication-service
           uri: ${AUTH_SERVICE_URL}
