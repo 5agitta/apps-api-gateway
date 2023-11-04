@@ -14,12 +14,12 @@ image:
   pullPolicy: Always
 
 service:
-  type: NodePort
+  type: ClusterIP
   targetPort: 8085
   nodePort: 30885
 
 ingress:
-  enabled: false
+  enabled: true
   rules:
     - host: taxwizapi.sagitta.dev
       path: /
