@@ -23,7 +23,7 @@ spring:
         - id: user-service
           uri: ${USER_SERVICE_URL}
           metadata:
-            public: false
+            public: true
             docs: /api-docs
           predicates:
             - Path=/api/user/**
@@ -32,7 +32,7 @@ spring:
         - id: tax-service
           uri: ${TAX_SERVICE_URL}
           metadata:
-            public: false
+            public: true
             docs: /api-docs
           predicates:
             - Path=/api/tax/**

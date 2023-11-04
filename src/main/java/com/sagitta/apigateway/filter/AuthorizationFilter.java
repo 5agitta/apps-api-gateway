@@ -55,7 +55,7 @@ public class AuthorizationFilter implements GlobalFilter {
         // get the JWT token
         var jwt = authorization.replace("Bearer ", "");
 
-        Optional<AccessToken> accessToken = accessTokenRepository.findByToken(jwt);
+        Optional<AccessToken> accessToken = accessTokenRepository.findFirstByAccessToken(jwt);
         if (accessToken.isEmpty() || !accessToken.get().isActive()) {
             return onError(exchange, HttpStatus.UNAUTHORIZED, "Invalid access token", null);
         }

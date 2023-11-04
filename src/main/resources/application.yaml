@@ -18,7 +18,7 @@ spring:
     change-log: classpath:db/migrations/changelog-master.xml
   data:
     redis:
-      timeout: 600ms
+      timeout: 2s
   cache:
     type: redis
     redis:

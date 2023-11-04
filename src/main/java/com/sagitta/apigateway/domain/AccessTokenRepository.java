@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface AccessTokenRepository extends CrudRepository<AccessToken, String> {
-    Optional<AccessToken> findByToken(String jwt);
+    Optional<AccessToken> findFirstByAccessToken(String accessToken);
 }
